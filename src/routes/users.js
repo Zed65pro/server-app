@@ -1,6 +1,8 @@
 const express = require("express");
+const requireAuth = require("../middlewares/requireAuth");
 const User = require("../models/User");
 const router = express.Router();
+const upload = require("../storage");
 
 //add user
 router.get("/:id", async (req, res) => {
@@ -16,3 +18,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 module.exports = router;
+
+// Assuming you have an endpoint to handle profile picture upload
+router.post("/profile-picture", requireAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    const { image } = req.body;
+
+    if (image) {
+      // Save the profile picture path or URL to the user's profilePicture field
+      user.profilePicture = image;
+      await user.save();
+    }
+
+    res.send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: "Internal server error" });
+  }
+});

@@ -25,10 +25,17 @@ router.post("/:userId/friends", requireAuth, async (req, res) => {
     }
 
     if (!friend) {
-      return res.status(404).send({ error: "Friend not found" });
+      return res.status(404).send({ error: "User not found" });
     }
     if (user._id.equals(friend._id)) {
       return res.status(400).send({ error: "Cannot add yourself as a friend" });
+    }
+
+    const existingFriend = user.friends.find(
+      (f) => f.friendId.toString() === friend._id.toString()
+    );
+    if (existingFriend) {
+      return res.status(400).send({ error: "Friend already exists" });
     }
     // Add friend to user's friends list
     user.friends.push({

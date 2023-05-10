@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 5,
   },
+  profilePicture: {
+    type: String, // Assuming the profile picture is stored as a URL or file path,
+    default: "",
+  },
   posts: {
     required: true,
     type: [mongoose.Schema.Types.ObjectId],
