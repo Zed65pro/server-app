@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
     type: String, // Assuming the profile picture is stored as a URL or file path,
     default: "",
   },
+  dateOfBirth: {
+    type: Date,
+    default: null, // Set the default value to null or a specific default date
+  },
   posts: {
     required: true,
     type: [mongoose.Schema.Types.ObjectId],
