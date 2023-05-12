@@ -45,7 +45,10 @@ router.patch("/edit", requireAuth, async (req, res) => {
 
     // Update the user object with the provided data
     if (dateOfBirth) {
-      user.dateOfBirth = dateOfBirth;
+      const parsedDateOfBirth = new Date(dateOfBirth);
+      if (!isNaN(parsedDateOfBirth)) {
+        user.dateOfBirth = parsedDateOfBirth;
+      }
     }
     if (image) {
       user.profilePicture = image;
@@ -56,7 +59,6 @@ router.patch("/edit", requireAuth, async (req, res) => {
     if (email) {
       user.email = email;
     }
-
     // Save the updated user object
     await user.save();
 

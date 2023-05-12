@@ -54,11 +54,11 @@ router.post("/:userId/friends", requireAuth, async (req, res) => {
 });
 
 // DELETE /users/:userId/friends/:friendId
-router.delete("/:userId/friends/:friendId", requireAuth, async (req, res) => {
-  const { userId, friendId } = req.params;
+router.delete("/friends/:friendId", requireAuth, async (req, res) => {
+  const { friendId } = req.params;
 
   try {
-    const user = await User.findById(userId);
+    const user = req.user;
 
     // Check if user exists
     if (!user) {
