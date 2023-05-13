@@ -4,12 +4,9 @@ const User = require("../models/User");
 const router = express.Router();
 
 // Add friend to user's friends list
-router.post("/:userId/friends", requireAuth, async (req, res) => {
+router.post("/friends", requireAuth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
-    if (!user) {
-      return res.status(404).send({ error: "User not found" });
-    }
+    const user = req.user;
 
     // Extract friend details from request body
     const { friendId, friendEmail, friendUsername } = req.body;

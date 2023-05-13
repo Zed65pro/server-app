@@ -9,11 +9,14 @@ const mongoose = require("mongoose");
 // CREATE a new post
 router.post("/", requireAuth, async (req, res) => {
   try {
-    const { body, hashtags, userId } = req.body;
+    const { body, hashtags, userId, username } = req.body;
     const post = new postSchema({
       body,
       hashtags,
-      userId: mongoose.Types.ObjectId(userId),
+      user: {
+        userId: mongoose.Types.ObjectId(userId),
+        username: username,
+      },
     });
 
     const user = await userSchema.findByIdAndUpdate(userId, {
@@ -37,7 +40,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// READ all posts
+// READ posts by a yser
 router.get("/user/:id", async (req, res) => {
   try {
     const user = await userSchema.findById(req.params.id).populate("posts");
