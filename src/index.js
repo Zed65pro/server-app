@@ -45,6 +45,7 @@ app.use("/post", require("./routes/likes.js"));
 app.use("/users", require("./routes/friends.js"));
 app.use("/users", require("./routes/users.js"));
 app.use("/search", require("./routes/search.js"));
+app.use("/comments", require("./routes/comments.js"));
 
 // Port configuration
 const port = process.env.PORT || 3000;

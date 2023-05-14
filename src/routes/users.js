@@ -4,7 +4,6 @@ const User = require("../models/User");
 const router = express.Router();
 const upload = require("../storage");
 
-//add user
 router.get("/:id", async (req, res) => {
   try {
     const userId = req.params.id;

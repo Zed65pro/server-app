@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 // CREATE a new post
 router.post("/", requireAuth, async (req, res) => {
   try {
-    const { body, hashtags, userId, username } = req.body;
+    const { body, hashtags, userId, username, image } = req.body;
     const post = new postSchema({
       body,
       hashtags,
@@ -19,10 +19,13 @@ router.post("/", requireAuth, async (req, res) => {
       },
     });
 
+    image ? (post.image = image) : "";
+
     const user = await userSchema.findByIdAndUpdate(userId, {
       $push: { posts: post._id },
     });
 
+    console.log(post);
     await post.save();
     res.status(201).json(post);
   } catch (err) {

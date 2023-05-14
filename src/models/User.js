@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     default: [],
   },
+  comments: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Comment",
+    default: [],
+  },
   friends: {
     type: [
       {
@@ -55,6 +60,10 @@ const userSchema = new mongoose.Schema({
       },
     ],
     default: [],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
