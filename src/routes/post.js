@@ -9,13 +9,15 @@ const mongoose = require("mongoose");
 // CREATE a new post
 router.post("/", requireAuth, async (req, res) => {
   try {
-    const { body, hashtags, userId, username, image } = req.body;
+    const { body, hashtags, userId, username, image, profilePicture } =
+      req.body;
     const post = new postSchema({
       body,
       hashtags,
       user: {
         userId: mongoose.Types.ObjectId(userId),
-        username: username,
+        username,
+        profilePicture,
       },
     });
 
