@@ -27,7 +27,6 @@ router.post("/", requireAuth, async (req, res) => {
       $push: { posts: post._id },
     });
 
-    console.log(post);
     await post.save();
     res.status(201).json(post);
   } catch (err) {

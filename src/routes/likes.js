@@ -34,10 +34,6 @@ router.patch("/likes/:id", requireAuth, getPost, async (req, res) => {
         { new: true }
       );
     }
-
-    updatedPost.likesCount = updatedPost.likesSum;
-    updatedPost.dislikesCount = updatedPost.dislikesSum;
-
     await updatedPost.save();
 
     res.send(updatedPost);
@@ -46,7 +42,7 @@ router.patch("/likes/:id", requireAuth, getPost, async (req, res) => {
   }
 });
 
-// INC like from a user
+// INC dislike from a user
 router.patch("/dislikes/:id", requireAuth, getPost, async (req, res) => {
   let updatedPost = null;
 
@@ -86,8 +82,9 @@ router.patch("/dislikes/:id", requireAuth, getPost, async (req, res) => {
 });
 
 router.get("/liked/:id", requireAuth, getPost, (req, res) => {
+  const userId = req.params.id;
   try {
-    if (!res.post.likes.includes(req.user._id)) {
+    if (!res.post.likes.includes(userId)) {
       return res.send(false);
     }
 
@@ -99,8 +96,9 @@ router.get("/liked/:id", requireAuth, getPost, (req, res) => {
 
 // READ a single post
 router.get("/disliked/:id", requireAuth, getPost, (req, res) => {
+  const userId = req.params.id;
   try {
-    if (!res.post.dislikes.includes(req.user._id)) {
+    if (!res.post.dislikes.includes(userId)) {
       return res.send(false);
     }
 

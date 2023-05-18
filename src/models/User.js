@@ -57,6 +57,10 @@ const userSchema = new mongoose.Schema({
           required: true,
           validate: [validateEmail, "Please fill a valid email address"],
         },
+        friendProfilePicture: {
+          type: String,
+          required: true,
+        },
       },
     ],
     default: [],

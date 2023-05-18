@@ -60,6 +60,8 @@ const postSchema = new mongoose.Schema({
 postSchema.pre("save", function (next) {
   this.likesCount = this.likes.length;
   this.dislikesCount = this.dislikes.length;
+
+  console.log(this);
   next();
 });
 

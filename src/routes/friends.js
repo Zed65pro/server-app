@@ -24,6 +24,7 @@ router.post("/friends", requireAuth, async (req, res) => {
     if (!friend) {
       return res.status(404).send({ error: "User not found" });
     }
+
     if (user._id.equals(friend._id)) {
       return res.status(400).send({ error: "Cannot add yourself as a friend" });
     }
@@ -39,6 +40,7 @@ router.post("/friends", requireAuth, async (req, res) => {
       friendId: friend._id,
       friendName: friend.username,
       friendEmail: friend.email,
+      friendProfilePicture: friend.profilePicture,
     });
 
     await user.save();
