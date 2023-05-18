@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
     console.log("Received message:", message);
     // Broadcast the message to all connected clients
 
-    const room = message.receiver + "-" + message.sender;
+    const room = "-12";
     io.to(room).emit("chat message", message);
   });
 
