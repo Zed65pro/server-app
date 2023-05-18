@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
+const http = require("http");
 const bodyParser = require("body-parser");
+const { Server } = require("socket.io");
 
 // dotenv configuration
 require("dotenv").config({ path: "./src/config/.env" });
@@ -8,8 +10,43 @@ require("dotenv").config({ path: "./src/config/.env" });
 // App configuration
 const app = express();
 
+// Socket.io config
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 200, // for legacy browser support
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("A new client connected");
+
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  });
+
+  // Handle chat message event
+  socket.on("chat message", (message) => {
+    console.log("Received message:", message);
+    // Broadcast the message to all connected clients
+
+    const room = message.receiver + "-" + message.sender;
+    io.to(room).emit("chat message", message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A client disconnected");
+  });
+});
+
+// Media content size limit
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
+
 // Cors config
 const cors = require("cors");
 const corsOptions = {
@@ -47,8 +84,8 @@ app.use("/users", require("./routes/users.js"));
 app.use("/search", require("./routes/search.js"));
 app.use("/comments", require("./routes/comments.js"));
 
-// Port configuration
+// Start the server
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`listening on port ${port}`);
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
