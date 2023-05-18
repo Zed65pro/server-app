@@ -59,7 +59,7 @@ const userSchema = new mongoose.Schema({
         },
         friendProfilePicture: {
           type: String,
-          required: true,
+          default: "",
         },
       },
     ],
