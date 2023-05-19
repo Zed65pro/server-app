@@ -31,11 +31,12 @@ io.on("connection", (socket) => {
 
   // Handle chat message event
   socket.on("chat message", (message) => {
-    console.log("Received message:", message);
+    // console.log("Received message:", message);
     // Broadcast the message to all connected clients
-
-    const room = "-12";
-    io.to(room).emit("chat message", message);
+    const roomKey = [message.sender.userId, message.receiver.userId]
+      .sort()
+      .join("_");
+    io.to(roomKey).emit("chat message", message);
   });
 
   socket.on("disconnect", () => {
@@ -83,6 +84,7 @@ app.use("/users", require("./routes/friends.js"));
 app.use("/users", require("./routes/users.js"));
 app.use("/search", require("./routes/search.js"));
 app.use("/comments", require("./routes/comments.js"));
+app.use("/messages", require("./routes/messages.js"));
 
 // Start the server
 const port = process.env.PORT || 3000;
