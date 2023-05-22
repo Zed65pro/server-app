@@ -44,6 +44,25 @@ router.get("/", async (req, res) => {
   }
 });
 
+//READ POSTS USING PAGINATION
+// router.get("/paginate", async (req, res) => {
+//   try {
+//     const { page = 1, pageSize = 3 } = req.query;
+//     const skip = (page - 1) * pageSize;
+
+//     const [posts, totalCount] = await Promise.all([
+//       postSchema.find().skip(skip).limit(Number(pageSize)),
+//       postSchema.countDocuments(),
+//     ]);
+
+//     const totalPages = Math.ceil(totalCount / pageSize);
+
+//     res.json({ data: posts, totalPages });
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
 // READ posts by a yser
 router.get("/user/:id", async (req, res) => {
   try {

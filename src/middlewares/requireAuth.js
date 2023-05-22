@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization)
-    return res.status(401).send({ err: "You must be logged in to continue." });
+    return res.status(401).send("You must be logged in to continue.");
 
   const token = authorization.replace("Bearer ", "");
 

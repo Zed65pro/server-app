@@ -17,7 +17,7 @@ router.get("/token", requireAuth, async (req, res) => {
   try {
     res.send(req.user);
   } catch (err) {
-    res.status(404).send({ message: err.message });
+    res.status(404).send(err.message);
   }
 });
 

@@ -31,7 +31,7 @@ router.post("/signin", async (req, res) => {
   try {
     await user.comparePassword(password);
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
-    console.log(token);
+    // console.log(token);
     return res.send({
       token,
       user,
@@ -43,7 +43,6 @@ router.post("/signin", async (req, res) => {
 
 router.post("/logout", (req, res) => {
   res.clearCookie("token");
-  res.clearCookie("user");
   res.send({ message: "Successfully signed out!" });
 });
 
