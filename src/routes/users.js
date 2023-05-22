@@ -39,7 +39,7 @@ router.post("/profile-picture", requireAuth, async (req, res) => {
 });
 
 // PATCH route for updating user profile
-router.patch("/edit/:postId", requireAuth, async (req, res) => {
+router.patch("/edit", requireAuth, async (req, res) => {
   const { image, username, email, dateOfBirth } = req.body;
 
   try {
