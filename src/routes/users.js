@@ -1,8 +1,10 @@
 const express = require("express");
 const requireAuth = require("../middlewares/requireAuth");
-const User = require("../models/User");
 const router = express.Router();
-const upload = require("../storage");
+
+// const upload = require("../storage");
+const User = require("../models/User");
+const Post = require("../models/Post");
 
 router.get("/:id", async (req, res) => {
   try {
@@ -37,8 +39,9 @@ router.post("/profile-picture", requireAuth, async (req, res) => {
 });
 
 // PATCH route for updating user profile
-router.patch("/edit", requireAuth, async (req, res) => {
+router.patch("/edit/:postId", requireAuth, async (req, res) => {
   const { image, username, email, dateOfBirth } = req.body;
+
   try {
     const user = req.user;
 
@@ -58,12 +61,25 @@ router.patch("/edit", requireAuth, async (req, res) => {
     if (email) {
       user.email = email;
     }
+
     // Save the updated user object
     await user.save();
 
-    res.status(200).json({ message: "User updated successfully", user });
+    // Update all posts with the new user data
+    const posts = await Post.find({ "user.userId": user._id });
+
+    for (let i = 0; i < posts.length; i++) {
+      const post = posts[i];
+      post.user.username = user.username;
+      post.user.profilePicture = user.profilePicture;
+      await post.save();
+    }
+
+    res
+      .status(200)
+      .json({ message: "User and posts updated successfully", user });
   } catch (error) {
-    console.error("Error updating user:", error);
+    console.error("Error updating user and posts:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
