@@ -5,8 +5,7 @@ const bodyParser = require("body-parser");
 const { Server } = require("socket.io");
 
 // dotenv configuration
-require("dotenv").config({ path: "./src/config/.env" });
-
+require("dotenv").config();
 // App configuration
 const app = express();
 
